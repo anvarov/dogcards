@@ -1,7 +1,8 @@
 {
   "name": "wikiCard",
   "version": "1.0.0",
-  "description": "A simple wikipedia info viewer made dedicated to Google Front End Web Developer course project",
+  "description":
+    "A simple wikipedia info viewer made dedicated to Google Front End Web Developer course project",
   "main": "index.js",
   "author": "Akmal Anvarov",
   "license": "MIT",
