@@ -1,17 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
-import Content from './components/Content';
+import MainPage from './components/MainPage';
 
 const App = props => (
   <div>
-    <h1>Hello Wold! {props.text}</h1>
-    <Content />
+    <h1>Dog Cards App</h1>
+    <MainPage />
   </div>
 );
 
-App.propTypes = {
-  text: PropTypes.string.isRequired
-};
+// App.propTypes = {
+//   text: PropTypes.string.isRequired
+// };
 
-ReactDOM.render(<App text="ssss" />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));
