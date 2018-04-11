@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import FormattedArticle from '../components/FormattedArticle';
 import breedList from '../fixtures/BreedList';
 import cheerio from 'cheerio';
-import axios from 'axios';
 import 'babel-core/register';
 import 'babel-polyfill';
 import http from 'http';
