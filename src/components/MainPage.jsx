@@ -8,88 +8,62 @@ import 'babel-polyfill';
 import http from 'http';
 import request from 'request';
 // const got = require('got');
-let response;
-let $;
-let table;
+let [response, $, table, parsedBody, history, breedName, url] = [];
+
 export default class App extends Component {
   //setting up state
   constructor() {
     super();
     this.state = {
       name: 'Borzoi',
-      otherNames: '',
-      commonNicknames: '',
-      description: '',
       url: '',
       error: '',
-      img: '',
       breedList,
-      ready: true
+      ready: true,
+      table: ''
     };
     this.getData = this.getData.bind(this);
   }
 
+  //get data method on click button
   getData = async () => {
     try {
-      let breedName =
-        breedList[Math.floor(Math.random() * (breedList.length - 1))];
-      let url = `https://en.wikipedia.org/api/rest_v1/page/html/${breedName}?redirect=true`;
+      breedName = breedList[Math.floor(Math.random() * (breedList.length - 1))];
+      url = `https://en.wikipedia.org/api/rest_v1/page/html/${breedName}?redirect=trsue`;
       this.setState(prevState => ({
         ready: !prevState.ready
       }));
       await request(url, (err, res, body) => {
-        let [count, i] = [0, 1];
-        $ = cheerio.load(body);
-        let that = this;
-        table = $('table[class="infobox biota"]').find('*');
-        table.each(function(index, element) {
-          if (
-            $(this).text() === 'Other names' &&
-            $(this)[0].children[0].data === 'Other names'
-          ) {
-            console.log(count);
-            that.setState(() => ({
-              otherNames: $(this)
-                .parent()
-                .siblings('td')
-                .text()
-            }));
-            return;
-          } else if (
-            $(this).text() === 'Common nicknames' &&
-            $(this)[0].children[0].data === 'Common nicknames'
-          ) {
-            console.log(count + 1);
-            that.setState(() => ({
-              commonNicknames: $(this)
-                .siblings('td')
-                .text()
-            }));
-            return;
-          }
-          // console.log(this)
-        });
-        that.setState(prevState => ({
-          description: $('p')
-            .eq(0)
-            .text(),
-          name: $('#firstHeading').text(),
-          img: 'https:' + $('figure-inline > a > img').attr('src'),
+        
+        parsedBody = body.replace(
+          /(<span class="mw-reflink-text">\[\d\]<\/span>|\\n|\\)/,
+          ''
+        );
+        $ = cheerio.load(parsedBody);
+        table = $('table.infobox.biota');
+        this.setState(prevState => ({
+          name: $('caption').text(),
           url,
-          ready: !prevState.ready
+          ready: !prevState.ready,
+          table
         }));
-        // console.log($);
       });
     } catch (err) {
-      console.log(err);
+      this.setState(() => {
+        error: err;
+      });
     }
   };
 
-  render() {
-    console.log('from render');
+//loading data at firs start
+  componentWillMount() {
+    this.getData()
+  }
 
+  render() {
     return (
       <div>
+        <h1 style={{ marginLeft: '2em' }}>Dog Cards App</h1>
         <FormattedArticle breedData={this.state} onClick={this.getData} />
       </div>
     );

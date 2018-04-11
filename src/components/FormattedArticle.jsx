@@ -3,24 +3,41 @@ import ReactDOM from 'react-dom';
 
 const FormattedArticle = props => {
   {
-    //console.log(props);
     if (!props.breedData.error) {
       return (
         <div>
-          <figure>
-            <figcaption>{props.breedData.name}</figcaption>
-            <img src={props.breedData.img} />
-          </figure>
-          <p>{props.breedData.otherNames}</p>
-          <p>{props.breedData.commonNicknames}</p>
-          <p>{props.breedData.description}</p>
-          <button disabled={!props.breedData.ready} onClick={props.onClick}>Get breed data</button>
+          <div dangerouslySetInnerHTML={{ __html: props.breedData.table }} />
+          <button
+            style={{
+              padding: '10px',
+              marginLeft: '20px',
+              marginTop: '10px'
+            }}
+            disabled={!props.breedData.ready}
+            onClick={props.onClick}
+          >
+            Get breed data
+          </button>
+          <a
+            style={{
+              padding: '10px',
+              marginLeft: '20px'
+            }}
+            href={props.breedData.url}
+          >
+            Continue Reading
+          </a>
         </div>
       );
     } else {
-      return <p>{props.breedData.error}</p>;
+      return (
+        <p>
+          Oops looks like an error, please try again. Error:{
+            props.breedData.error
+          }
+        </p>
+      );
     }
-    
   }
 };
 export default FormattedArticle;

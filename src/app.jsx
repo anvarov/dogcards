@@ -5,7 +5,6 @@ import MainPage from './components/MainPage';
 
 const App = props => (
   <div>
-    <h1>Dog Cards App</h1>
     <MainPage />
   </div>
 );
